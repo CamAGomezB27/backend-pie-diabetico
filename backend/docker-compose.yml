@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=host.docker.internal  # Nombre del servicio de la base de datos
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=12345
+      - DB_NAME=pie_diabetico
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: pie_diabetico
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
