@@ -1,20 +1,23 @@
-# Usa una imagen base de Node.js optimizada
+# Usar una imagen oficial de Node.js como base
 FROM node:18-alpine
 
-# Establece el directorio de trabajo dentro del contenedor
+# Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia solo los archivos necesarios
+# Copiar los archivos necesarios para instalar dependencias
 COPY package.json package-lock.json ./
 
-# Instala las dependencias
+# Instalar las dependencias
 RUN npm install
 
-# Copia el resto del código del backend
+# Copiar el resto del código fuente
 COPY . .
 
-# Expone el puerto 3000 (NestJS)
+# Compilar TypeScript
+RUN npm run build
+
+# Exponer el puerto en el que corre NestJS
 EXPOSE 3000
 
-# Comando para iniciar el backend
-CMD ["npm", "run", "start"]
+# Comando para ejecutar la aplicación
+CMD ["node", "dist/main"]
